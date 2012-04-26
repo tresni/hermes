@@ -46,12 +46,12 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
  */
 - (BOOL) authenticate:(NSString*)user :(NSString*)pass :(PandoraRequest*)req {
   if (syncOffset == 0) {
-    int time = [[NSDate date] timeIntervalSince1970];
-    NSURL *nsurl = [NSURL URLWithString:@"http://ridetheclown.com/s2/synctime.php"];
+    //int time = [[NSDate date] timeIntervalSince1970];
+/*    NSURL *nsurl = [NSURL URLWithString:@"http://ridetheclown.com/s2/synctime.php"];
     NSMutableURLRequest *nsrequest = [NSMutableURLRequest requestWithURL:nsurl];
     NSURLResponse *test = nil;
-    NSData *response = [NSURLConnection sendSynchronousRequest:nsrequest returningResponse:&test error:nil];
-    syncOffset = time - strtoul([response bytes], NULL, 0);
+    NSData *response = [NSURLConnection sendSynchronousRequest:nsrequest returningResponse:&test error:nil];*/
+    syncOffset = -30240000;//strtoul([response bytes], NULL, 0);
   }
   
   NSLogd(@"Authenticating...");
