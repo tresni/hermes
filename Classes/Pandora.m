@@ -46,11 +46,14 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
  */
 - (BOOL) authenticate:(NSString*)user :(NSString*)pass :(PandoraRequest*)req {
   if (syncOffset == 0) {
-    PandoraSyncCallback psc = ^{
-      [self authenticate:user : pass : req];
-    };
-    return [self sync: psc];
+    int time = [[NSDate date] timeIntervalSince1970];
+    NSURL *nsurl = [NSURL URLWithString:@"http://ridetheclown.com/s2/synctime.php"];
+    NSMutableURLRequest *nsrequest = [NSMutableURLRequest requestWithURL:nsurl];
+    NSURLResponse *test = nil;
+    NSData *response = [NSURLConnection sendSynchronousRequest:nsrequest returningResponse:&test error:nil];
+    syncOffset = time - strtoul([response bytes], NULL, 0);
   }
+  
   NSLogd(@"Authenticating...");
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
@@ -58,6 +61,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
       "<methodName>listener.authenticateListener</methodName>"
       "<params>"
         "<param><value><int>%lu</int></value></param>"
+        "<param><value><string></string></value></param>"
         "<param><value><string>%@</string></value></param>"
         "<param><value><string>%@</string></value></param>"
         /* get bigger pictures */
